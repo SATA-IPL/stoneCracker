@@ -57,7 +57,9 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     func stopRecording() {
         audioRecorder?.stop()
         isRecording = false
+        sendAudioFileToAPI()
         self.togglePlayback()
+        
     }
 
     // Toggle recording state
@@ -130,4 +132,44 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         isPlaying = false
     }
+    
+    //send audio file to api
+    func sendAudioFileToAPI() {
+            let url = URL(string: "http://127.0.0.1:5000/success")!  // Flask API URL
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+
+            let boundary = UUID().uuidString
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+            let body = NSMutableData()
+
+            // Append the audio file data
+            if let audioData = try? Data(contentsOf: audioFileURL) {
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(audioFileURL.lastPathComponent)\"\r\n".data(using: .utf8)!)
+                body.append("Content-Type: audio/m4a\r\n\r\n".data(using: .utf8)!)
+                body.append(audioData)
+                body.append("\r\n".data(using: .utf8)!)
+            }
+
+            body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+            request.httpBody = body as Data
+
+            // Perform the request
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Error sending audio file: \(error)")
+                    return
+                }
+
+                if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+                    print("Audio file uploaded successfully!")
+                } else {
+                    print("Failed to upload audio file.")
+                }
+            }
+
+            task.resume()
+        }
 }
