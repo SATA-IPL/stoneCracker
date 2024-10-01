@@ -6,9 +6,13 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     var audioPlayer: AVAudioPlayer?
     @Published var isRecording = false
     @Published var isPlaying = false
+    @Published var playbackProgress: CGFloat = 0.0
 
     // URL where the audio file will be saved
     let audioFileURL: URL
+    
+    // Timer to update playback progress
+    var playbackTimer: Timer?
 
     override init() {
         // Set up the file path for the recording
@@ -53,6 +57,7 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     func stopRecording() {
         audioRecorder?.stop()
         isRecording = false
+        self.togglePlayback()
     }
 
     // Toggle recording state
@@ -73,11 +78,12 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
 
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: audioFileURL)
+            audioPlayer?.delegate = self
             audioPlayer?.play()
             isPlaying = true
 
-            // Stop playing when audio finishes
-            audioPlayer?.delegate = self
+            // Start timer to update playback progress
+            startPlaybackTimer()
         } catch {
             print("Failed to play audio: \(error)")
         }
@@ -97,6 +103,28 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
             playRecording()
         }
     }
+    
+    // Start the timer to update playback progress
+        private func startPlaybackTimer() {
+            playbackTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.updatePlaybackProgress()
+            }
+        }
+
+        // Stop the timer when playback finishes or stops
+        private func stopPlaybackTimer() {
+            playbackTimer?.invalidate()
+            playbackTimer = nil
+        }
+
+        // Update the playback progress
+        private func updatePlaybackProgress() {
+            guard let audioPlayer = audioPlayer else { return }
+
+            // Calculate the progress (currentTime / duration)
+            let progress = CGFloat(audioPlayer.currentTime / audioPlayer.duration)
+            playbackProgress = progress
+        }
 
     // AVAudioPlayerDelegate method: stops playing after audio finishes
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {

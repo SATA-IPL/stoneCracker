@@ -12,38 +12,32 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            // Show mic icon based on recording state
-            Image(systemName: audioRecorder.isRecording ? "mic.fill" : "mic.slash")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-                .padding()
-
-            // Text to show whether recording or idle
-            Text(audioRecorder.isRecording ? "Recording..." : "Tap to Record")
-            
-            // Button to toggle recording
             Button(action: {
                 audioRecorder.toggleRecording()
             }) {
-                Text(audioRecorder.isRecording ? "Stop Recording" : "Start Recording")
-                    .padding()
-                    .background(audioRecorder.isRecording ? Color.red : Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                ZStack{
+                    Circle()
+                        .trim(from: 0.0, to: audioRecorder.isPlaying ? audioRecorder.playbackProgress : 1.0)
+                        .stroke(.white.opacity(0.5), lineWidth: 2)
+                        .foregroundStyle(.ultraThinMaterial)
+                        .rotationEffect(.degrees(-90))
+                        .animation(.easeInOut(duration: 0.2), value: audioRecorder.playbackProgress)
+                    if audioRecorder.isRecording {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.red)
+                            .frame(width: 75, height: 75)
+                            .transition(.scale)
+                    } else {
+                        Circle()
+                            .fill(audioRecorder.isPlaying ? Color.blue : Color.red)
+                            .padding(10)
+                            .transition(.scale)
+                    }
+                }
             }
+            .buttonStyle(.plain)
             .padding()
-
-            // Button to play or stop playback
-            Button(action: {
-                audioRecorder.togglePlayback()
-            }) {
-                Text(audioRecorder.isPlaying ? "Stop Playing" : "Play Recording")
-                    .padding()
-                    .background(audioRecorder.isPlaying ? Color.orange : Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            }
-            .padding()
+            .disabled(audioRecorder.isPlaying)
         }
         .padding()
     }
