@@ -13,7 +13,11 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Button(action: {
-                audioRecorder.toggleRecording()
+                if(audioRecorder.isPlaying){
+                    audioRecorder.togglePlayback()
+                }else{
+                    audioRecorder.toggleRecording()
+                }
             }) {
                 ZStack{
                     Circle()
@@ -38,7 +42,6 @@ struct ContentView: View {
             .handGestureShortcut(.primaryAction)
             .buttonStyle(.plain)
             .padding()
-            .disabled(audioRecorder.isPlaying)
         }
         .padding()
     }
