@@ -1,5 +1,6 @@
 import Foundation
 import AVFoundation
+import WatchKit
 
 class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     var audioRecorder: AVAudioRecorder?
@@ -51,6 +52,7 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         }
         audioRecorder?.record()
         isRecording = true
+        WKInterfaceDevice.current().play(.start)
     }
 
     // Stop recording
@@ -58,6 +60,7 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         audioRecorder?.stop()
         isRecording = false
         self.togglePlayback()
+        WKInterfaceDevice.current().play(.stop)
     }
 
     // Toggle recording state
@@ -129,5 +132,6 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     // AVAudioPlayerDelegate method: stops playing after audio finishes
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         isPlaying = false
+        WKInterfaceDevice.current().play(.success)
     }
 }

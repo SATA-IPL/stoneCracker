@@ -35,6 +35,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .handGestureShortcut(.primaryAction)
             .buttonStyle(.plain)
             .padding()
             .disabled(audioRecorder.isPlaying)
