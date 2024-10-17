@@ -6,17 +6,44 @@
 //
 
 import SwiftUI
+import HealthKit
 
 struct ContentView: View {
     @StateObject private var audioRecorder = AudioRecorderViewModel()
+    @StateObject private var healthMetricsVM = HealthMetricsViewModel()
 
     var body: some View {
+        TabView {
+            // First Tab: Audio Recorder
+            audioRecorderView()
+            
+            // Second Tab: Heart Rate
+            heartRateView()
+                .containerBackground(Color.red.gradient,for: .tabView)
+
+            // Third Tab: Performance Metrics
+            performanceMetricsView()
+                .containerBackground(Color.green.gradient,for: .tabView)
+
+
+            // Fourth Tab: Calories
+            caloriesView()
+                .containerBackground(Color.orange.gradient,for: .tabView)
+
+        }
+        .ignoresSafeArea()
+        .tabViewStyle(.verticalPage) // Use a page style for watchOS 10
+    }
+
+    // MARK: - View Functions
+
+    private func audioRecorderView() -> some View {
         VStack {
             Button(action: {
                 if audioRecorder.isPlaying {
-                    //audioRecorder.togglePlayback() // Stop playback if currently playing
+                    audioRecorder.togglePlayback()
                 } else {
-                    audioRecorder.toggleRecording() // Start or stop recording
+                    audioRecorder.toggleRecording()
                 }
             }) {
                 ZStack {
@@ -42,6 +69,45 @@ struct ContentView: View {
             }
             .buttonStyle(.plain)
             .padding()
+        }
+    }
+
+    private func heartRateView() -> some View {
+        VStack {
+            if let heartRate = healthMetricsVM.currentHeartRate {
+                Text("Heart Rate: \(heartRate, specifier: "%.0f") BPM")
+                    .foregroundColor(.red)
+                    .padding()
+            } else {
+                Text("Fetching heart rate...")
+                    .foregroundColor(.gray)
+            }
+        }
+        .onAppear {
+            healthMetricsVM.startMonitoringHealthData()
+        }
+        .onDisappear {
+            healthMetricsVM.stopMonitoringHealthData()
+        }
+    }
+
+    private func performanceMetricsView() -> some View {
+        VStack {
+            if let distance = healthMetricsVM.totalDistance {
+                Text("Total Distance: \(distance, specifier: "%.2f") m")
+            }
+        }
+        .padding()
+    }
+
+    private func caloriesView() -> some View {
+        VStack {
+            if let calories = healthMetricsVM.caloriesBurned {
+                Text("Calories Burned: \(calories, specifier: "%.0f") kcal")
+            } else {
+                Text("Fetching calories...")
+                    .foregroundColor(.gray)
+            }
         }
         .padding()
     }
