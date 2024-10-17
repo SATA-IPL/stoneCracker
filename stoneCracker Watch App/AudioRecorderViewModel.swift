@@ -22,6 +22,9 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
 
     // WebSocket properties
     var socket: WebSocket?
+    
+    // Timer to update playback progress
+    var playbackTimer: Timer?
 
     override init() {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -270,5 +273,68 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
             print("peer closed")
         }
     
+    }
+    
+    
+    // Play the recorded audio
+    func playRecording() {
+        if !FileManager.default.fileExists(atPath: audioFileURL.path) {
+            print("No recording found at \(audioFileURL.path)")
+            return
+        }
+
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: audioFileURL)
+            audioPlayer?.delegate = self
+            audioPlayer?.play()
+            isPlaying = true
+
+            // Start timer to update playback progress
+            startPlaybackTimer()
+        } catch {
+            print("Failed to play audio: \(error)")
+        }
+    }
+    // Start the timer to update playback progress
+        private func startPlaybackTimer() {
+            playbackTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.updatePlaybackProgress()
+            }
+        }
+
+        // Stop the timer when playback finishes or stops
+        private func stopPlaybackTimer() {
+            playbackTimer?.invalidate()
+            playbackTimer = nil
+        }
+
+        // Update the playback progress
+        private func updatePlaybackProgress() {
+            guard let audioPlayer = audioPlayer else { return }
+
+            // Calculate the progress (currentTime / duration)
+            let progress = CGFloat(audioPlayer.currentTime / audioPlayer.duration)
+            playbackProgress = progress
+        }
+
+    // AVAudioPlayerDelegate method: stops playing after audio finishes
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        isPlaying = false
+        WKInterfaceDevice.current().play(.success)
+    }
+
+    // Stop playing audio
+    func stopPlaying() {
+        audioPlayer?.stop()
+        isPlaying = false
+    }
+
+    // Toggle playback state
+    func togglePlayback() {
+        if isPlaying {
+            stopPlaying()
+        } else {
+            playRecording()
+        }
     }
 }
