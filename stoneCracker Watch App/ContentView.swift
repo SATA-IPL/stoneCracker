@@ -53,7 +53,7 @@ struct ContentView: View {
                         .foregroundStyle(.ultraThinMaterial)
                         .rotationEffect(.degrees(-90))
                         .animation(.easeInOut(duration: 0.2), value: audioRecorder.playbackProgress)
-                    
+
                     if audioRecorder.isRecording {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color.red)
