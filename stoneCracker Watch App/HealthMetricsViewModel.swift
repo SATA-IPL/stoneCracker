@@ -16,6 +16,9 @@ class HealthMetricsViewModel: ObservableObject {
     @Published var currentSpO2: Double?
     @Published var caloriesBurned: Double?
     @Published var vo2Max: Double?
+    @Published var totalDistance: Double? // New property for total distance
+    @Published var maxSpeed: Double?      // New property for maximum speed
+    @Published var maxPower: Double?       // New property for maximum power
 
     init() {
         requestAuthorization()
@@ -28,7 +31,8 @@ class HealthMetricsViewModel: ObservableObject {
             HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
             HKObjectType.quantityType(forIdentifier: .oxygenSaturation)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            HKObjectType.quantityType(forIdentifier: .vo2Max)!
+            HKObjectType.quantityType(forIdentifier: .vo2Max)!,
+            HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!, // New distance type
         ]
 
         healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
@@ -45,6 +49,7 @@ class HealthMetricsViewModel: ObservableObject {
         fetchSpO2()
         fetchCaloriesBurned()
         fetchVO2Max()
+        fetchTotalDistance()   // Fetch total distance
     }
 
     // Stop monitoring if necessary (for future use)
@@ -64,8 +69,7 @@ class HealthMetricsViewModel: ObservableObject {
     }
 
     private func processHeartRate(samples: [HKSample]?) {
-        guard let heartRateSamples = samples as? [HKQuantitySample] else { return }
-        guard let latestSample = heartRateSamples.last else { return }
+        guard let heartRateSamples = samples as? [HKQuantitySample], let latestSample = heartRateSamples.last else { return }
 
         let heartRateUnit = HKUnit(from: "count/min")
         let heartRate = latestSample.quantity.doubleValue(for: heartRateUnit)
@@ -89,8 +93,7 @@ class HealthMetricsViewModel: ObservableObject {
     }
 
     private func processHRV(samples: [HKSample]?) {
-        guard let hrvSamples = samples as? [HKQuantitySample] else { return }
-        guard let latestSample = hrvSamples.last else { return }
+        guard let hrvSamples = samples as? [HKQuantitySample], let latestSample = hrvSamples.last else { return }
 
         let hrvUnit = HKUnit.secondUnit(with: .milli)
         let hrv = latestSample.quantity.doubleValue(for: hrvUnit)
@@ -114,8 +117,7 @@ class HealthMetricsViewModel: ObservableObject {
     }
 
     private func processSpO2(samples: [HKSample]?) {
-        guard let spo2Samples = samples as? [HKQuantitySample] else { return }
-        guard let latestSample = spo2Samples.last else { return }
+        guard let spo2Samples = samples as? [HKQuantitySample], let latestSample = spo2Samples.last else { return }
 
         let spo2Unit = HKUnit.percent()
         let spo2 = latestSample.quantity.doubleValue(for: spo2Unit) * 100
@@ -139,8 +141,7 @@ class HealthMetricsViewModel: ObservableObject {
     }
 
     private func processCaloriesBurned(samples: [HKSample]?) {
-        guard let calorieSamples = samples as? [HKQuantitySample] else { return }
-        guard let latestSample = calorieSamples.last else { return }
+        guard let calorieSamples = samples as? [HKQuantitySample], let latestSample = calorieSamples.last else { return }
 
         let calorieUnit = HKUnit.kilocalorie()
         let calories = latestSample.quantity.doubleValue(for: calorieUnit)
@@ -164,14 +165,39 @@ class HealthMetricsViewModel: ObservableObject {
     }
 
     private func processVO2Max(samples: [HKSample]?) {
-        guard let vo2MaxSamples = samples as? [HKQuantitySample] else { return }
-        guard let latestSample = vo2MaxSamples.last else { return }
+        guard let vo2MaxSamples = samples as? [HKQuantitySample], let latestSample = vo2MaxSamples.last else { return }
 
         let vo2MaxUnit = HKUnit(from: "ml/kg*min")
         let vo2Max = latestSample.quantity.doubleValue(for: vo2MaxUnit)
 
         DispatchQueue.main.async {
             self.vo2Max = vo2Max
+        }
+    }
+
+    // New functions for fetching additional metrics
+
+    private func fetchTotalDistance() {
+        let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let query = HKAnchoredObjectQuery(type: distanceType, predicate: nil, anchor: nil, limit: HKObjectQueryNoLimit) { [weak self] query, samples, deletedObjects, anchor, error in
+            self?.processTotalDistance(samples: samples)
+        }
+
+        query.updateHandler = { [weak self] query, samples, deletedObjects, anchor, error in
+            self?.processTotalDistance(samples: samples)
+        }
+
+        healthStore.execute(query)
+    }
+
+    private func processTotalDistance(samples: [HKSample]?) {
+        guard let distanceSamples = samples as? [HKQuantitySample], let latestSample = distanceSamples.last else { return }
+
+        let distanceUnit = HKUnit.meter()
+        let distance = latestSample.quantity.doubleValue(for: distanceUnit)
+
+        DispatchQueue.main.async {
+            self.totalDistance = distance
         }
     }
 }
