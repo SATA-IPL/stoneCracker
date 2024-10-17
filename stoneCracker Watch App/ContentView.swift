@@ -13,19 +13,20 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Button(action: {
-                if(audioRecorder.isPlaying){
-                    audioRecorder.togglePlayback()
-                }else{
-                    audioRecorder.toggleRecording()
+                if audioRecorder.isPlaying {
+                    //audioRecorder.togglePlayback() // Stop playback if currently playing
+                } else {
+                    audioRecorder.toggleRecording() // Start or stop recording
                 }
             }) {
-                ZStack{
+                ZStack {
                     Circle()
                         .trim(from: 0.0, to: audioRecorder.isPlaying ? audioRecorder.playbackProgress : 1.0)
-                        .stroke(.white.opacity(0.5), lineWidth: 2)
+                        .stroke(Color.white.opacity(0.5), lineWidth: 2)
                         .foregroundStyle(.ultraThinMaterial)
                         .rotationEffect(.degrees(-90))
                         .animation(.easeInOut(duration: 0.2), value: audioRecorder.playbackProgress)
+
                     if audioRecorder.isRecording {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color.red)
@@ -39,7 +40,6 @@ struct ContentView: View {
                     }
                 }
             }
-            .handGestureShortcut(.primaryAction)
             .buttonStyle(.plain)
             .padding()
         }

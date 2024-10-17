@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C7D9F112CB84CC0007547FA /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 4C7D9F102CB84CC0007547FA /* Starscream */; };
+		4C7D9F132CB84D95007547FA /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 4C7D9F122CB84D95007547FA /* Starscream */; };
+		4C7D9F152CB84DA7007547FA /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 4C7D9F142CB84DA7007547FA /* Starscream */; };
 		4CA854712CAC053B00E10042 /* stoneCracker Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 4CA854702CAC053B00E10042 /* stoneCracker Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -78,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C7D9F112CB84CC0007547FA /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C7D9F132CB84D95007547FA /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C7D9F152CB84DA7007547FA /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +164,7 @@
 			);
 			name = "stoneCracker Watch App";
 			packageProductDependencies = (
+				4C7D9F102CB84CC0007547FA /* Starscream */,
 			);
 			productName = "stoneCracker Watch App";
 			productReference = 4CA854702CAC053B00E10042 /* stoneCracker Watch App.app */;
@@ -181,6 +188,7 @@
 			);
 			name = "stoneCracker Watch AppTests";
 			packageProductDependencies = (
+				4C7D9F122CB84D95007547FA /* Starscream */,
 			);
 			productName = "stoneCracker Watch AppTests";
 			productReference = 4CA854822CAC053C00E10042 /* stoneCracker Watch AppTests.xctest */;
@@ -204,6 +212,7 @@
 			);
 			name = "stoneCracker Watch AppUITests";
 			packageProductDependencies = (
+				4C7D9F142CB84DA7007547FA /* Starscream */,
 			);
 			productName = "stoneCracker Watch AppUITests";
 			productReference = 4CA8548C2CAC053C00E10042 /* stoneCracker Watch AppUITests.xctest */;
@@ -244,6 +253,9 @@
 			);
 			mainGroup = 4CA854632CAC053B00E10042;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4CB1B7DC2CB84C4500318ECE /* XCRemoteSwiftPackageReference "Starscream" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4CA8546B2CAC053B00E10042 /* Products */;
 			projectDirPath = "";
@@ -664,6 +676,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4CB1B7DC2CB84C4500318ECE /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.8;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4C7D9F102CB84CC0007547FA /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CB1B7DC2CB84C4500318ECE /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
+		4C7D9F122CB84D95007547FA /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CB1B7DC2CB84C4500318ECE /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
+		4C7D9F142CB84DA7007547FA /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CB1B7DC2CB84C4500318ECE /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4CA854642CAC053B00E10042 /* Project object */;
 }
