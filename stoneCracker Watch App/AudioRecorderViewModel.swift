@@ -32,7 +32,7 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
         super.init()
         
         // Initialize WebSocket
-        let urlws = URL(string: "http://127.0.0.1:5000/reverse")!
+        let urlws = URL(string: "http://192.168.1.140:5001/reverse")!
         var request = URLRequest(url: urlws)
         socket = WebSocket(request: request)
         socket?.delegate = self  // Set this class as the WebSocket delegate
@@ -176,7 +176,7 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
             return  // Ensure we only send when we have a full chunk
         }
         
-        let url = URL(string: "http://127.0.0.1:5000/audio")!
+        let url = URL(string: "http:/192.168.1.140:5001/audio")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
@@ -225,7 +225,7 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
 
     // Call server to finalize and reconstruct the audio
     func finalizeAudioOnServer() {
-        let url = URL(string: "http://127.0.0.1:5000/finalize")!
+        let url = URL(string: "http://192.168.1.140:5001/finalize")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
