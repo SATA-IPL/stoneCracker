@@ -1,37 +1,28 @@
-//
-//  ContentView.swift
-//  stoneCracker Watch App
-//
-//  Created by Miguel Susano on 01/10/2024.
-//
-
 import SwiftUI
 import HealthKit
 import CoreLocation
 
 struct ContentView: View {
     @StateObject private var healthMetricsVM = HealthMetricsViewModel()
-    @StateObject private var locationManager = LocationManager()
+    @StateObject private var locationManager = LocationManager() // Add LocationManager
 
     var body: some View {
         TabView {
             // Second Tab: Heart Rate
             heartRateView()
-                .containerBackground(Color.red.gradient,for: .tabView)
+                .containerBackground(Color.red.gradient, for: .tabView)
 
             // Third Tab: Performance Metrics
             performanceMetricsView()
-                .containerBackground(Color.green.gradient,for: .tabView)
-
+                .containerBackground(Color.green.gradient, for: .tabView)
 
             // Fourth Tab: Calories
             caloriesView()
-                .containerBackground(Color.orange.gradient,for: .tabView)
-            
-            // Fifth Tab: Location
-            locationView()
-                .containerBackground(Color.blue.gradient,for: .tabView)
+                .containerBackground(Color.orange.gradient, for: .tabView)
 
+            // New Tab: Location
+            locationView()
+                .containerBackground(Color.blue.gradient, for: .tabView)
         }
         .ignoresSafeArea()
         .tabViewStyle(.verticalPage) // Use a page style for watchOS 10

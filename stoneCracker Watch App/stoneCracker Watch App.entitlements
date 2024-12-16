@@ -10,5 +10,9 @@
 	</array>
 	<key>com.apple.developer.healthkit.background-delivery</key>
 	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.external-accessory.wireless-configuration</key>
+	<true/>
 </dict>
 </plist>
