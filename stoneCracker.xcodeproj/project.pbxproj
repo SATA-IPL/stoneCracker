@@ -466,7 +466,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"stoneCracker Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = 4VYPF8T3V5;
+				DEVELOPMENT_TEAM = BFJTBBXTZ9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "stoneCracker-Watch-App-Info.plist";
@@ -484,7 +484,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ipleiria.stoneCracker.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = joaofranco.stoneCracker.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -504,7 +504,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"stoneCracker Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = 4VYPF8T3V5;
+				DEVELOPMENT_TEAM = BFJTBBXTZ9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "stoneCracker-Watch-App-Info.plist";
@@ -522,7 +522,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ipleiria.stoneCracker.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = joaofranco.stoneCracker.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -537,13 +537,15 @@
 		4CA8549B2CAC053C00E10042 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4VYPF8T3V5;
+				DEVELOPMENT_TEAM = BFJTBBXTZ9;
 				INFOPLIST_KEY_CFBundleDisplayName = stoneCracker;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ipleiria.stoneCracker;
+				PRODUCT_BUNDLE_IDENTIFIER = joaofranco.stoneCracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};
@@ -552,13 +554,15 @@
 		4CA8549C2CAC053C00E10042 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4VYPF8T3V5;
+				DEVELOPMENT_TEAM = BFJTBBXTZ9;
 				INFOPLIST_KEY_CFBundleDisplayName = stoneCracker;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ipleiria.stoneCracker;
+				PRODUCT_BUNDLE_IDENTIFIER = joaofranco.stoneCracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
@@ -571,10 +575,10 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4VYPF8T3V5;
+				DEVELOPMENT_TEAM = BFJTBBXTZ9;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ipleiria.stoneCracker-Watch-AppTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "joaofranco.stoneCracker-Watch-AppTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -591,10 +595,10 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4VYPF8T3V5;
+				DEVELOPMENT_TEAM = BFJTBBXTZ9;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ipleiria.stoneCracker-Watch-AppTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "joaofranco.stoneCracker-Watch-AppTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;

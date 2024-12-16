@@ -11,14 +11,12 @@ import HealthKit
 class HealthMetricsViewModel: ObservableObject {
     private var healthStore = HKHealthStore()
 
-    @Published var currentHeartRate: Double?
-    @Published var currentHRV: Double?
-    @Published var currentSpO2: Double?
-    @Published var caloriesBurned: Double?
-    @Published var vo2Max: Double?
-    @Published var totalDistance: Double? // New property for total distance
-    @Published var maxSpeed: Double?      // New property for maximum speed
-    @Published var maxPower: Double?       // New property for maximum power
+    @Published var currentHeartRate: Double? // Property for heart rate
+    @Published var currentHRV: Double? //HRV -> Heart Rate Variability
+    @Published var currentSpO2: Double? //SpO2 -> Oxygen Saturation
+    @Published var caloriesBurned: Double? // Property for calories burned
+    @Published var vo2Max: Double? // VO2 Max -> Maximal oxygen consumption
+    @Published var totalDistance: Double? // Property for total distance
 
     init() {
         requestAuthorization()
