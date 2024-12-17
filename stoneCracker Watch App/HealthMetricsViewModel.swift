@@ -10,6 +10,7 @@ import HealthKit
 
 class HealthMetricsViewModel: ObservableObject {
     private var healthStore = HKHealthStore()
+    private var updateTimer: Timer?
 
     @Published var currentHeartRate: Double? // Property for heart rate
     @Published var currentHRV: Double? //HRV -> Heart Rate Variability
@@ -20,6 +21,9 @@ class HealthMetricsViewModel: ObservableObject {
 
     init() {
         requestAuthorization()
+        #if targetEnvironment(simulator)
+        setSimulatorPlaceholderValues() // Set placeholder values for testing only in simulator
+        #endif
     }
 
     // Request permission to access health data
@@ -48,10 +52,29 @@ class HealthMetricsViewModel: ObservableObject {
         fetchCaloriesBurned()
         fetchVO2Max()
         fetchTotalDistance()   // Fetch total distance
+        
+        // Start timer for sending data
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+            self?.sendDataToServer()
+        }
     }
 
     // Stop monitoring if necessary (for future use)
-    func stopMonitoringHealthData() {}
+    func stopMonitoringHealthData() {
+        updateTimer?.invalidate()
+        updateTimer = nil
+    }
+
+    private func sendDataToServer() {
+        NetworkService.shared.sendHealthData(
+            heartRate: currentHeartRate,
+            spo2: currentSpO2,
+            calories: caloriesBurned,
+            distance: totalDistance,
+            hrv: currentHRV,
+            vo2Max: vo2Max
+        )
+    }
 
     private func fetchHeartRate() {
         let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
@@ -197,5 +220,14 @@ class HealthMetricsViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.totalDistance = distance
         }
+    }
+
+    private func setSimulatorPlaceholderValues() {
+        self.currentHeartRate = 75.0
+        self.currentHRV = 50.0
+        self.currentSpO2 = 98.0
+        self.caloriesBurned = 500.0
+        self.vo2Max = 40.0
+        self.totalDistance = 5.0
     }
 }

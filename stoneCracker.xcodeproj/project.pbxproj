@@ -471,6 +471,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "stoneCracker-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = stoneCracker;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need to use yout health data.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "We need access to your local network";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to provide features even when the app is in the background.";
@@ -509,6 +510,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "stoneCracker-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = stoneCracker;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need to use yout health data.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "We need access to your local network";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to provide features even when the app is in the background.";
