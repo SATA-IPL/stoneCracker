@@ -9,7 +9,7 @@ class NetworkService {
     #if targetEnvironment(simulator)
     private let serverURL = "http://192.168.1.218:5001/health-data"
     #else
-    private let serverURL = "http://192.168.1.218:5001/health-data"
+    private let serverURL = "http://10.20.229.47:5001/health-data"
     #endif
     
     private let maxRetries = 3
@@ -78,6 +78,10 @@ class NetworkService {
             print("Error: Invalid URL")
             return
         }
+
+        //Log JSON
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        print("Sending data: \(jsonString)")
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

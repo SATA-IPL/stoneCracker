@@ -11,6 +11,7 @@ import HealthKit
 class HealthMetricsViewModel: ObservableObject {
     private var healthStore = HKHealthStore()
     private var updateTimer: Timer?
+    private var locationManager = LocationManager()
 
     @Published var currentHeartRate: Double? // Property for heart rate
     @Published var currentHRV: Double? //HRV -> Heart Rate Variability
@@ -23,6 +24,7 @@ class HealthMetricsViewModel: ObservableObject {
 
     init() {
         requestAuthorization()
+        setupLocationUpdates()
         #if targetEnvironment(simulator)
         setSimulatorPlaceholderValues() // Set placeholder values for testing only in simulator
         #endif
@@ -56,7 +58,7 @@ class HealthMetricsViewModel: ObservableObject {
         fetchTotalDistance()   // Fetch total distance
         
         // Start timer for sending data
-        updateTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.sendDataToServer()
         }
     }
@@ -235,5 +237,15 @@ class HealthMetricsViewModel: ObservableObject {
         self.totalDistance = 5.0
         self.currentLatitude = 41.1579
         self.currentLongitude = -8.6291
+    }
+
+    private func setupLocationUpdates() {
+        locationManager.locationUpdateHandler = { [weak self] location in
+            DispatchQueue.main.async {
+                self?.currentLatitude = location.coordinate.latitude
+                self?.currentLongitude = location.coordinate.longitude
+            }
+        }
+        locationManager.startLocationTracking()
     }
 }

@@ -12,6 +12,13 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>10.20.229.47</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>192.168.1.218</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -21,8 +28,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>This app needs access to local network to send health data</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_http._tcp</string>

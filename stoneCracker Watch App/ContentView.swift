@@ -11,7 +11,7 @@ import CoreLocation
 
 struct ContentView: View {
     @StateObject private var healthMetricsVM = HealthMetricsViewModel()
-    @StateObject private var locationManager = LocationManager()
+    // Remove @StateObject private var locationManager = LocationManager()
 
     var body: some View {
         TabView {
@@ -185,12 +185,13 @@ struct ContentView: View {
                     .font(.system(size: 16))
                     .foregroundColor(.white.opacity(0.8))
                 
-                if let location = locationManager.currentLocation {
+                if let latitude = healthMetricsVM.currentLatitude,
+                   let longitude = healthMetricsVM.currentLongitude {
                     VStack(spacing: 4) {
-                        Text("\(String(format: "%.4f", location.coordinate.latitude))")
+                        Text("\(String(format: "%.4f", latitude))")
                             .font(.system(size: 24, weight: .semibold, design: .rounded))
                             .foregroundColor(.white)
-                        Text("\(String(format: "%.4f", location.coordinate.longitude))")
+                        Text("\(String(format: "%.4f", longitude))")
                             .font(.system(size: 24, weight: .semibold, design: .rounded))
                             .foregroundColor(.white)
                     }
@@ -214,12 +215,7 @@ struct ContentView: View {
                 }
             }
         }
-        .onAppear {
-            locationManager.startLocationTracking()
-        }
-        .onDisappear {
-            locationManager.stopLocationTracking()
-        }
+        // Remove onAppear and onDisappear since LocationManager is now managed by ViewModel
     }
 
     private func oxygenView() -> some View {
