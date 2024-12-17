@@ -18,6 +18,8 @@ class HealthMetricsViewModel: ObservableObject {
     @Published var caloriesBurned: Double? // Property for calories burned
     @Published var vo2Max: Double? // VO2 Max -> Maximal oxygen consumption
     @Published var totalDistance: Double? // Property for total distance
+    @Published var currentLatitude: Double?
+    @Published var currentLongitude: Double?
 
     init() {
         requestAuthorization()
@@ -72,7 +74,9 @@ class HealthMetricsViewModel: ObservableObject {
             calories: caloriesBurned,
             distance: totalDistance,
             hrv: currentHRV,
-            vo2Max: vo2Max
+            vo2Max: vo2Max,
+            latitude: currentLatitude,
+            longitude: currentLongitude
         )
     }
 
@@ -229,5 +233,7 @@ class HealthMetricsViewModel: ObservableObject {
         self.caloriesBurned = 500.0
         self.vo2Max = 40.0
         self.totalDistance = 5.0
+        self.currentLatitude = 41.1579
+        self.currentLongitude = -8.6291
     }
 }

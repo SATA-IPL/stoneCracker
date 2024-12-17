@@ -46,15 +46,15 @@ class NetworkService {
         monitor.start(queue: queue)
     }
     
-    func sendHealthData(heartRate: Double?, spo2: Double?, calories: Double?, distance: Double?, hrv: Double?, vo2Max: Double?) {
+    func sendHealthData(heartRate: Double?, spo2: Double?, calories: Double?, distance: Double?, hrv: Double?, vo2Max: Double?, latitude: Double? = nil, longitude: Double? = nil) {
         guard isNetworkAvailable else {
             print("No network connection available")
             return
         }
-        sendDataWithRetry(heartRate: heartRate, spo2: spo2, calories: calories, distance: distance, hrv: hrv, vo2Max: vo2Max, retryCount: 0)
+        sendDataWithRetry(heartRate: heartRate, spo2: spo2, calories: calories, distance: distance, hrv: hrv, vo2Max: vo2Max, latitude: latitude, longitude: longitude, retryCount: 0)
     }
     
-    private func sendDataWithRetry(heartRate: Double?, spo2: Double?, calories: Double?, distance: Double?, hrv: Double?, vo2Max: Double?, retryCount: Int) {
+    private func sendDataWithRetry(heartRate: Double?, spo2: Double?, calories: Double?, distance: Double?, hrv: Double?, vo2Max: Double?, latitude: Double?, longitude: Double?, retryCount: Int) {
         var dataDict: [String: Any] = [
             "timestamp": Date().ISO8601Format()
         ]
@@ -66,6 +66,8 @@ class NetworkService {
         if let distance = distance { dataDict["distance"] = distance }
         if let hrv = hrv { dataDict["hrv"] = hrv }
         if let vo2Max = vo2Max { dataDict["vo2_max"] = vo2Max }
+        if let latitude = latitude { dataDict["latitude"] = latitude }
+        if let longitude = longitude { dataDict["longitude"] = longitude }
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDict) else {
             print("Error: Cannot create JSON")
@@ -98,6 +100,8 @@ class NetworkService {
                             distance: distance,
                             hrv: hrv,
                             vo2Max: vo2Max,
+                            latitude: latitude,
+                            longitude: longitude,
                             retryCount: retryCount + 1
                         )
                     }
