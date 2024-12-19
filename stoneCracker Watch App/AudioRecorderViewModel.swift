@@ -32,7 +32,7 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
         super.init()
         
         // Initialize WebSocket
-        let urlws = URL(string: "http://192.168.1.140:5001/reverse")!
+        let urlws = URL(string: "http://144.24.177.214:5001/reverse")!
         var request = URLRequest(url: urlws)
         socket = WebSocket(request: request)
         socket?.delegate = self  // Set this class as the WebSocket delegate
@@ -169,46 +169,6 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
         }
     }
 
-    // Send audio chunk to Flask API
-    func sendAudioChunkToAPI() {
-        guard chunk.count >= chunkSize else {
-            print("Chunk not full...", chunk.count, chunkSize)
-            return  // Ensure we only send when we have a full chunk
-        }
-        
-        let url = URL(string: "http:/192.168.1.140:5001/audio")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        let boundary = UUID().uuidString
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        var body = Data()
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"chunk.pcm\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: audio/pcm\r\n\r\n".data(using: .utf8)!)
-        body.append(chunk)
-        body.append("\r\n".data(using: .utf8)!)
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        request.httpBody = body
-        
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            if let error = error {
-                print("Error sending audio chunk: \(error)")
-                return
-            }
-
-            if let response = response as? HTTPURLResponse, response.statusCode == 200 {
-                print("Audio chunk uploaded successfully!")
-                self?.chunk.removeAll()  // Reset chunk after successful upload
-            } else {
-                print("Failed to upload audio chunk.")
-            }
-        }
-        task.resume()
-    }
-
     // Send audio chunk to WebSocket
     func sendAudioChunkToWebSocket() {
         guard chunk.count >= chunkSize else {
@@ -226,10 +186,13 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
     // Call server to finalize and reconstruct the audio
     func finalizeAudioOnServer() {
         let url = URL(string: "http://192.168.1.140:5001/finalize")!
+
+        // Since we need to make a POST request, we still need URLRequest to set the HTTP method.
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let config = URLSessionConfiguration.ephemeral
+        config.waitsForConnectivity = true
+        let task = URLSession(configuration: config).dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error finalizing audio: \(error)")
                 return
@@ -242,6 +205,7 @@ class AudioRecorderViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate,
             }
         }
         task.resume()
+
     }
 
     // WebSocket delegate methods
